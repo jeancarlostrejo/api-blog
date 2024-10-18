@@ -8,8 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-use function PHPUnit\Framework\isEmpty;
-
 class PostController extends Controller
 {
     /**
@@ -19,7 +17,7 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
-        if(isEmpty($posts)){
+        if($posts->isEmpty()){
             return response()->json(['message' => 'No posts yet', 'data' => $posts], 200);
         }
 
@@ -45,7 +43,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        
     }
 
     /**
