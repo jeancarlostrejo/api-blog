@@ -17,7 +17,7 @@ class PostController extends Controller
      */
     public function index(): JsonResponse
     {
-        $posts = Post::all();
+        $posts = Post::where('user_id', auth()->user()->id)->get();
 
         if($posts->isEmpty()){
             return response()->json(['message' => 'No posts yet', 'data' => $posts], 200);
@@ -43,16 +43,20 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Post $post): JsonResponse
     {
+        $this->authorize('view', $post);
+
         return response()->json($post, Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post): JsonResponse
     {
+        $this->authorize('update', $post);
+
         $validated = $request->validated();
 
         if($request->hasFile('image')) {
@@ -71,8 +75,10 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Post $post): Response
     {
+        $this->authorize('delete', $post);
+
         Storage::delete($post->image);
 
         $post->delete();
