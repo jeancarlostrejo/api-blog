@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -22,7 +23,7 @@ class PostController extends Controller
             return response()->json(['message' => 'No posts yet', 'data' => $posts], 200);
         }
 
-        return response()->json(['data' => $posts]);
+        return response()->json(['data' => $posts], Response::HTTP_OK);
     }
 
     /**
@@ -36,7 +37,7 @@ class PostController extends Controller
 
         $post = auth()->user()->posts()->create($validated);
 
-        return response()->json(['message' => 'Post created successfully', 'data' => $post], 201);
+        return response()->json(['message' => 'Post created successfully', 'data' => $post], Response::HTTP_CREATED);
     }
 
     /**
@@ -44,7 +45,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return response()->json($post);
+        return response()->json($post, Response::HTTP_OK);
     }
 
     /**
@@ -64,7 +65,7 @@ class PostController extends Controller
 
         $post->update($validated);
 
-        return response()->json(["message" => "Post updated successfully", "data" => $post], 200);
+        return response()->json(["message" => "Post updated successfully", "data" => $post], Response::HTTP_OK);
     }
 
     /**
