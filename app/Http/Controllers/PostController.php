@@ -47,6 +47,8 @@ class PostController extends Controller
     {
         $this->authorize('view', $post);
 
+        $post->load('comments');
+
         return response()->json($post, Response::HTTP_OK);
     }
 
