@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -43,15 +44,27 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        
+        return response()->json($post);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $validated = $request->validated();
+
+        if($request->hasFile('image')) {
+            Storage::delete($post->image);
+
+            $validated["image"] = Storage::put('posts', $validated["image"]);
+        }
+
+        $validated['image'] ??= $post->image;
+
+        $post->update($validated);
+
+        return response()->json(["message" => "Post updated successfully", "data" => $post], 200);
     }
 
     /**
