@@ -72,6 +72,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        Storage::delete($post->image);
+
+        $post->delete();
+
+        return response()->noContent();
     }
 }
