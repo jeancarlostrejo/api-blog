@@ -45,7 +45,7 @@ class PostController extends Controller
      */
     public function show(Post $post): JsonResponse
     {
-        $post->load('comments');
+        $post->load(['comments.user'])->loadCount(['comments', 'likes']);
 
         return response()->json($post, Response::HTTP_OK);
     }
