@@ -17,7 +17,7 @@ class PostController extends Controller
      */
     public function index(): JsonResponse
     {
-        $posts = Post::where('user_id', auth()->user()->id)->get();
+        $posts = Post::with('comments')->get();
 
         if($posts->isEmpty()){
             return response()->json(['message' => 'No posts yet', 'data' => $posts], 200);
@@ -45,7 +45,7 @@ class PostController extends Controller
      */
     public function show(Post $post): JsonResponse
     {
-        $this->authorize('view', $post);
+        $post->load('comments');
 
         return response()->json($post, Response::HTTP_OK);
     }
