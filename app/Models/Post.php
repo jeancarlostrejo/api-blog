@@ -32,4 +32,14 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function isLiked(User $user): bool
+    {
+        return $this->likes->contains('user_id', $user->id);
+    }
 }
