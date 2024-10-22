@@ -33,6 +33,6 @@ class AuthController extends Controller
     {
         auth()->user()->tokens()->delete();
 
-        return response()->json(['message' => 'user successfully'], 204);
+        return response()->json(['message' => 'logout successfully'], 204);
     }
 }
