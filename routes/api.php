@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SubscriptionController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/posts/{post}/likes', [LikeController::class, 'store'])->name('post.like');
     Route::post('/users/{user}/subscribe', [SubscriptionController::class, 'subscribe'])->name('users.subscribe');
     Route::delete('/users/{user}/unsubscribe', [SubscriptionController::class, 'unsubscribe'])->name('users.unsubscribe');
+    Route::get('/users/{user}/subscribers', [SubscriptionController::class, 'subscribers'])->name('users.subscribers');
+    Route::get('/users/{user}/subscriptions', [SubscriptionController::class, 'subscriptions'])->name('users.subscriptions');
 });
