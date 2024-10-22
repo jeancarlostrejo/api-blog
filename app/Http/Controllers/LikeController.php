@@ -14,13 +14,13 @@ class LikeController extends Controller
         if($post->isLiked(auth()->user())) {
             $post->likes()->where('user_id', auth()->user()->id)->delete();
 
-            return response()->json(["Unlike post"], Response::HTTP_OK);
+            return response()->json(["message" => "Unlike post"], Response::HTTP_OK);
         }
 
         $post->likes()->create([
             'user_id' => auth()->user()->id
         ]);
 
-        return response()->json(["Like post"], Response::HTTP_CREATED);
+        return response()->json(["message" => "Like post"], Response::HTTP_CREATED);
     }
 }
