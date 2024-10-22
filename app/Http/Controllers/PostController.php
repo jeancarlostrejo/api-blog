@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewPostCreated;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
@@ -39,9 +40,7 @@ class PostController extends Controller
 
         $post = auth()->user()->posts()->create($validated);
 
-        if(!(auth()->user()->subscribers->isEmpty())){
-            Notification::send(auth()->user()->subscribers, new NewPostNotification(auth()->user(), $post));
-        }
+        // event(new NewPostCreated(auth()->user(), $post));
 
         return response()->json(['message' => 'Post created successfully', 'data' => $post], Response::HTTP_CREATED);
     }
