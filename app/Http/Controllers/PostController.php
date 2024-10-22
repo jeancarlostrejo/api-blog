@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Notifications\NewPostNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -36,6 +38,10 @@ class PostController extends Controller
         $validated["image"] = Storage::put('posts', $validated["image"]);
 
         $post = auth()->user()->posts()->create($validated);
+
+        if(!(auth()->user()->subscribers->isEmpty())){
+            Notification::send(auth()->user()->subscribers, new NewPostNotification(auth()->user(), $post));
+        }
 
         return response()->json(['message' => 'Post created successfully', 'data' => $post], Response::HTTP_CREATED);
     }
