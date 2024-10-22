@@ -40,7 +40,7 @@ class PostController extends Controller
 
         $post = auth()->user()->posts()->create($validated);
 
-        // event(new NewPostCreated(auth()->user(), $post));
+        event(new NewPostCreated(auth()->user(), $post));
 
         return response()->json(['message' => 'Post created successfully', 'data' => $post], Response::HTTP_CREATED);
     }
