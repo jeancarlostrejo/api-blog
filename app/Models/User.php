@@ -69,6 +69,6 @@ class User extends Authenticatable
     //Retorna todos los usuarios a los que el usuario actual está subscrito.
     public function subscriptions(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'subscriptions', 'subscriober_id', 'subscribed_to_id');
+        return $this->belongsToMany(User::class, 'subscriptions', 'subscriber_id', 'subscribed_to_id');
     }
 }
